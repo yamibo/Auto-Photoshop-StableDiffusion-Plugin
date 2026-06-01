@@ -17,6 +17,8 @@ With Auto-Photoshop-StableDiffusion-Plugin, you can directly use the capabilitie
 
 本项目基于 Abdullah Alfaraj 开源的 Auto-Photoshop-StableDiffusion-Plugin 继续维护。原作者已经停更三年多，但这个插件仍然是我日常在 Photoshop 中使用 Stable Diffusion 的重要工具。因为长期使用中遇到了一些不方便的地方，所以决定在原 MIT 许可基础上继续开发。
 
+维护者：[@yamibo](https://github.com/yamibo) / [x.com/yamibo](https://x.com/yamibo)
+
 新的维护版本从 `1.5.0` 开始延续版本号。
 
 `1.5.0` 主要修改内容：
@@ -28,6 +30,8 @@ With Auto-Photoshop-StableDiffusion-Plugin, you can directly use the capabilitie
 ### English Note
 
 This project is a continued maintenance version of Abdullah Alfaraj's open-source Auto-Photoshop-StableDiffusion-Plugin. The original project has not been updated for more than three years, but it remains an important tool in my daily workflow for using Stable Diffusion inside Photoshop. Since I still use it regularly and have run into several workflow inconveniences, I decided to continue development under the original MIT license.
+
+Maintainer: [@yamibo](https://github.com/yamibo) / [x.com/yamibo](https://x.com/yamibo)
 
 The maintained version starts from version `1.5.0`.
 
