@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <style>
+      .c {
+        stroke-linejoin: round;
+      }
+
+      .c, .d, .e {
+        stroke: #d6d6d6;
+        stroke-linecap: round;
+      }
+
+      .c, .d, .e, .f {
+        fill: none;
+      }
+
+      .c, .e {
+        stroke-width: 4px;
+      }
+
+      .d {
+        stroke-width: 8px;
+      }
+
+      .d, .e {
+        stroke-miterlimit: 10;
+      }
+    </style>
+  </defs>
+  <g id="a" data-name="frame">
+    <rect class="f" width="64" height="64"/>
+  </g>
+  <g id="b" data-name="chain_white">
+    <path class="e" d="m36.42,34.84c2.15,1.45,3.55,3.99,3.55,6.64,0,4.41-3.57,7.98-7.98,7.98s-7.98-3.57-7.98-7.98c0-2.7,1.46-5.24,3.57-6.65"/>
+    <path class="e" d="m27.59,27.46c-.31-.22-3.58-2.63-3.57-6.47.01-3.85,3.31-7.98,7.98-7.98,4.41,0,7.98,3.57,7.98,7.98,0,2.65-1.4,5.19-3.56,6.64"/>
+    <line class="c" x1="32" y1="24.19" x2="32" y2="38.83"/>
+    <line class="d" x1="44.83" y1="31.51" x2="59.93" y2="31.51"/>
+    <line class="d" x1="4.02" y1="31.51" x2="19.6" y2="31.51"/>
+  </g>
+</svg>

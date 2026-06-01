@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="index.js"></script>
+    </head>
+    <style>
+        sp-textarea,
+        textarea {
+            width: 100%;
+            height: 100px;
+        }
+
+        #taPromptShortcut {
+            height: 300px;
+            margin: 3px auto;
+        }
+
+        #taPrompt {
+            box-sizing: border-box;
+            background: rgb(37, 37, 37);
+        }
+
+        .container {
+            width: 100%;
+            padding-left: 3%;
+            padding-right: 3%;
+        }
+
+        sp-progressbar {
+            margin-bottom: 3px;
+            margin-top: 3px;
+        }
+
+        .prompt-container {
+            width: 100%;
+            padding-left: 5%;
+            padding-right: 5%;
+        }
+
+        #collapsible {
+            background-color: #777;
+            color: white;
+            cursor: pointer;
+            padding: 5px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+        }
+
+        #collapsible:hover {
+            background-color: #333;
+        }
+
+        .content {
+            padding: 0 18px;
+            /* display: none; */
+            overflow: hidden;
+        }
+
+        .grid-container {
+            display: inline-flex;
+            grid-template-columns: auto auto auto;
+        }
+
+        .column-item-image {
+            width: 100px;
+            height: 100px;
+            margin: 0;
+        }
+
+        .viewer-image,
+        .history-image,
+        .image-search {
+            width: 100px;
+            height: 100px;
+            margin: 0;
+            position: relative;
+            max-height: 100%;
+            max-width: 100%;
+        }
+
+        .viewer-image-button {
+            display: none;
+            /* background-color:  #495b79; */
+            color: white;
+            border: none;
+            cursor: pointer;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            /* height: 20px; */
+            margin: 0;
+            max-height: 100%;
+            max-width: 100%;
+        }
+
+        .viewer-image-container {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 0;
+        }
+
+        .viewer-image-container:hover .viewer-image-button {
+            display: flex;
+        }
+
+        .viewer-image-container:hover .thumbnail-image-button {
+            display: flex;
+        }
+
+        .viewer-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .thumbnail-image-button {
+            display: none;
+            /* background-color:  #495b79; */
+            color: white;
+            border: none;
+            cursor: pointer;
+            position: absolute;
+            /* bottom: 0;
+            left: 0; */
+            width: 100%;
+            /* height: 20px; */
+            margin: 0;
+            max-height: 100%;
+            max-width: 100%;
+        }
+
+        .thumbnail-image-button:nth-child(2) {
+            border-color: green;
+            bottom: 0;
+            left: 0;
+        }
+        .thumbnail-image-button:nth-child(3) {
+            border-color: pink;
+            bottom: 0;
+            right: 0;
+        }
+        .thumbnail-image-button:nth-child(4) {
+            border-color: yellow;
+            top: 0;
+            left: 0;
+        }
+        .thumbnail-image-button:nth-child(5) {
+            border-color: red;
+            top: 0;
+            right: 0;
+        }
+
+        .column-item {
+            margin: 0;
+        }
+
+        .button-style {
+            background-color: #777;
+            color: white;
+            cursor: pointer;
+            width: 100px;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            margin: 0;
+        }
+
+        .disableBtn {
+            opacity: 0.65;
+            cursor: not-allowed !important;
+        }
+        .btnSquare,
+        #btnRefreshModels {
+            background-color: #777;
+            color: white;
+            cursor: pointer;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            margin: 0;
+        }
+        #btnRefreshModels:hover {
+            background-color: #333;
+        }
+        #btnRefreshModels:focus {
+            background-color: #f0f0f0;
+        }
+        .btnSquare:not(.btnGenerateClass):hover {
+            background-color: #333;
+        }
+        .btnSquare:focus {
+            background-color: #f0f0f0;
+        }
+        #btnUpdate {
+            background-color: #3555ac;
+            color: white;
+            cursor: pointer;
+
+            border: none;
+
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            margin-left: 3px;
+        }
+        #btnUpdate:hover {
+            background-color: #3f68d6;
+        }
+        .button-style2 {
+            background-color: #777;
+            color: white;
+            cursor: pointer;
+
+            border: 1px;
+
+            text-align: left;
+            outline-style: solid;
+            outline: solid;
+            font-size: 15px;
+            margin: 10px;
+        }
+
+        .wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            /* overflow: auto; */
+            overflow-x: hidden;
+            overflow-y: scroll;
+            padding: 0;
+        }
+
+        #progressContainer {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #lVersionNumber {
+            display: flex;
+            margin-left: auto;
+        }
+
+        .flexContainer {
+            flex: 0 0 auto;
+            display: flex;
+            flex-direction: row;
+        }
+
+        #historySeedLabelContainer {
+            display: flex;
+            margin-left: auto;
+        }
+
+        #menu-bar-container {
+            width: 100%;
+            display: flex;
+            /* justify-content: space-between; */
+            margin: 3px auto;
+        }
+
+        #sdBtnContainer {
+            display: flex;
+            flex: 0 0 auto;
+
+            flex-direction: row;
+            justify-content: space-between;
+            margin-bottom: 2px;
+        }
+
+        .labelNumber {
+            color: aliceblue;
+        }
+
+        #lNameInpaintPdding {
+            margin-right: 10px;
+        }
+
+        #pProgressBar {
+            width: 150px;
+        }
+        /* tabs */
+        .sp-tabs {
+            flex: 0 0 auto;
+            display: flex;
+            flex-direction: row;
+            border-bottom: 2px solid #3e3e3e;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .sp-tab {
+            margin-right: 12px;
+        }
+
+        .sp-tab sp-label {
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        .sp-tab:hover sp-label {
+            color: white;
+        }
+
+        .sp-tab.selected {
+            border-bottom: 2px solid white;
+            margin-bottom: -2px;
+        }
+
+        .sp-tab.selected sp-label {
+            color: white;
+        }
+
+        @media (prefers-color-scheme: light), (prefers-color-scheme: lightest) {
+            .sp-tabs {
+                border-bottom: 2px solid #b8b8b8;
+            }
+
+            .sp-tab sp-label {
+                color: rgba(0, 0, 0, 0.66);
+            }
+
+            .sp-tab:hover sp-label {
+                color: black;
+            }
+
+            .sp-tab.selected {
+                border-bottom: 2px solid black;
+            }
+
+            .sp-tab.selected sp-label {
+                color: black;
+            }
+        }
+
+        .sp-tab-page {
+            display: none;
+            padding: 8px;
+            flex-direction: column;
+            max-width: 100%;
+            position: relative;
+        }
+
+        .sp-tab-page.visible {
+            display: flex;
+        }
+
+        .sp-tab-page > * {
+            flex: 0 0 auto;
+        }
+
+        .viewerImgSelected {
+            border: 3px solid #6db579;
+        }
+
+        .viewerImgActive {
+            border: 3px solid #fb9700;
+        }
+
+        .generate-more {
+            background-color: #6db579;
+        }
+
+        .generate {
+            background-color: #ff595e;
+        }
+
+        .connected {
+            color: #6db579;
+        }
+
+        .disconnected {
+            color: #ff595e;
+        }
+
+        #slWidth {
+            width: 50%;
+            margin-right: 10px;
+        }
+
+        #slHeight {
+            width: 50%;
+            margin-left: 10px;
+        }
+
+        #hrWidth {
+            width: 33%;
+            margin-right: 10px;
+        }
+
+        #hrHeight {
+            width: 33%;
+            margin-left: 10px;
+        }
+        #hrScaleSlider,
+        #hrDenoisingStrength {
+            width: 50%;
+            margin-left: 10px;
+        }
+
+        #tiNumberOfSteps {
+            width: 50%;
+            width: auto;
+        }
+
+        .rbMaskContent {
+            font-size: 1.1em;
+        }
+
+        #rbSelectionModeLabel,
+        .rbSelectionMode,
+        .rbBaseSize {
+            font-size: 1em;
+            margin-right: 12px;
+        }
+        #BackendTypeLabel,
+        .rbBackendType {
+            font-size: 1.05em;
+            margin-right: 12px;
+        }
+        .checkbox {
+            font-size: 1em;
+            margin-right: 10px;
+        }
+
+        #slCfgScale {
+            width: 50%;
+            margin-right: 10px;
+        }
+        #slImageCfgScale {
+            width: 100%;
+            margin-right: 10px;
+        }
+
+        #slDenoisingStrength {
+            width: 50%;
+            margin-left: 10px;
+        }
+
+        #slInpaintingMaskWeight {
+            width: 100%;
+            /* margin-left: 10px; */
+        }
+
+        .disabled-btn {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
+        .buttonImage {
+            padding: 8px 8px 8px 32px;
+            font-family: Arial, Verdana;
+            background: #f0f0f0
+                url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABfUlEQVQ4y42TP2tUQRTFf3PnPYiLIAiKiKhIsLbxS9hZaykWNmKjgqT0A6SxslRIFRsRv0QwdZB1YyGipImbzWbfnHst3sZdZF92Bw7D/LmH37nDpL1NAyAlHgDXWW18j+A9QBXTnQhu3H704TXS2aU5s/f2/qvTZeXx78goDdE0Z9anusYDmxn4zMAlYglBMsN9zkAzgxwrGGCGnLzIwELCVZbUG+oicDWoLOtBhZwcAQFUZd6gCC/dBPW5Hr+/7VPaCHci2DU5TJVDBe+Q5cyvwT4ucfdleS7noQdURfMEDd4Rwc04OvzDtfWbjCYTitpG/hehoI4IZhmpjTgcj09jUGmeQAVXB4EypbRxjk5O0JTAvgygOBSnap9xsUJC0/nx4BLFW3p78c7Z6SeOJ2ktvL2wUC7G4zHh4uBgxPEkre30Ewb0NrZ0+XDEeUtGXdULZckYDodYMp59vLD9eZftjS31EnARuPr0Xn6yfoVbq/zlrz/pb37SG+DHXyrMGdFXikHpAAAAAElFTkSuQmCC);
+            background-position: 8px 8px;
+            background-repeat: no-repeat;
+        }
+        .reverse_image_serach {
+            font-family: Arial, Verdana;
+            background-image: url(./icon/image-search.svg);
+            background-color: #777;
+            background-size: 30px;
+            width: 30px;
+            height: 30px;
+            background-repeat: no-repeat;
+        }
+        .search-button {
+            font-family: Arial, Verdana;
+            background-image: url(./icon/search.svg);
+            background-color: #777;
+            background-size: 30px;
+            width: 30px;
+            height: 30px;
+            background-repeat: no-repeat;
+
+            background-position: center;
+        }
+        .layerToSelection {
+            font-family: Arial, Verdana;
+            background-image: url(./icon/layer_to_selection.svg);
+            background-color: #777;
+            background-size: 30px;
+            width: 30px;
+            height: 30px;
+            background-repeat: no-repeat;
+        }
+        .linkSlider {
+            margin-top: 25px;
+            font-family: Arial, Verdana;
+            /* background-image: url(./icon/chain.svg); */
+            /* background-color: #777; */
+            background-color: transparent;
+
+            background-size: 20px;
+            width: 20px;
+            height: 20px;
+            background-repeat: no-repeat;
+        }
+        .whiteChain {
+            background-image: url(./icon/chain_white.svg);
+        }
+        .blackChain {
+            background-image: url(./icon/chain_black.svg);
+        }
+        .acceptAllImgBtn {
+            font-family: Arial, Verdana;
+            background-image: url(./icon/accept_all.svg);
+            background-color: #777;
+            background-size: 30px;
+            width: 30px;
+            height: 30px;
+            background-repeat: no-repeat;
+        }
+
+        .acceptSelectedImgBtn {
+            font-family: Arial, Verdana;
+            background-image: url(./icon/accept_selected.svg);
+            background-color: #777;
+            background-size: 30px;
+            width: 30px;
+            height: 30px;
+            background-repeat: no-repeat;
+        }
+
+        .discardAllImgBtn {
+            font-family: Arial, Verdana;
+            background-image: url(./icon/discard_all.svg);
+            background-color: #777;
+            background-size: 30px;
+            width: 30px;
+            height: 30px;
+            background-repeat: no-repeat;
+        }
+
+        .discardSelectedImgBtn {
+            font-family: Arial, Verdana;
+            background-image: url(./icon/discard_selected.svg);
+            background-color: #777;
+            background-size: 30px;
+            width: 30px;
+            height: 30px;
+            background-repeat: no-repeat;
+        }
+
+        .resetButton {
+            font-family: Arial, Verdana;
+            background-image: url(./icon/reset_settings.svg);
+            background-color: #777;
+            background-size: 30px;
+            width: 30px;
+            height: 30px;
+            background-repeat: no-repeat;
+        }
+
+        .snapshotButton {
+            font-family: Arial, Verdana;
+            background-image: url(./icon/camera_icon.svg);
+            background-color: #777;
+            background-size: 30px;
+            width: 30px;
+            height: 30px;
+            background-repeat: no-repeat;
+        }
+        .svgButton {
+            font-family: Arial, Verdana;
+
+            background-color: #777;
+            background-size: 30px;
+            width: 30px;
+            height: 30px;
+            background-repeat: no-repeat;
+        }
+        .selectionAreaButton {
+            background-image: url(./icon/reselect-area.svg);
+        }
+        .interrogateButton {
+            font-family: Arial, Verdana;
+            background-image: url(./icon/writing-icon.svg);
+            /* background-color: transparent; */
+            background-size: 30px;
+            width: 30px;
+            height: 30px;
+            background-repeat: no-repeat;
+        }
+        .svg-buttons-container *:not(:last-child) {
+            margin-right: 3px;
+        }
+
+        .divBtn {
+            display: block;
+            padding: 10px;
+            border: 1px solid black;
+            background: red;
+            font-size: 16px;
+            color: black;
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            padding: 15px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        .line-divider {
+            background-color: #3e3e3e;
+        }
+        .res-increase {
+            color: #6db579;
+        }
+        .res-decrease {
+            color: #ff595e;
+        }
+        .controlNetImaageContainer {
+            margin-right: 3px;
+        }
+        #divInitImageViewerContainer {
+            display: flex;
+        }
+        .rbSubTab {
+            font-size: 0.9em;
+        }
+        .rbSubTab:last-child {
+            margin-right: 0;
+        }
+        #lexicaPrompt {
+            position: static;
+            top: 0;
+            left: 0;
+        }
+
+        .missing-error {
+            color: #ff595e;
+
+            white-space: normal;
+        }
+
+        .refreshButton {
+            font-family: Arial, Verdana;
+            background-image: url(./icon/reset_settings.svg);
+            background-color: #777;
+            background-size: 30px;
+            width: 30px;
+            height: 30px;
+            background-repeat: no-repeat;
+        }
+    </style>
+    <style>
+        .custom-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .custom-menu input[type='radio'] {
+            display: none;
+        }
+        .custom-menu label {
+            display: block;
+            padding: 10px;
+            cursor: pointer;
+        }
+        li input[type='radio']:checked + label {
+            border-bottom: 2px solid white;
+        }
+
+        li .sub-menu-tab-class + label {
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        li:hover .sp-menu-tab-class:hover + label {
+            color: white;
+        }
+
+        /* li .sp-tab.selected {
+            border-bottom: 2px solid white;
+            margin-bottom: -2px;
+        } */
+
+        /* .sp-tab.selected sp-label {
+            color: white;
+        } */
+    </style>
+    <style>
+        .second_panel {
+            flex: 1 1 auto;
+            /* overflow: scroll; */
+            overflow-y: scroll;
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-top: 12px;
+            padding-bottom: 12px;
+            flex-direction: column;
+            height: 100%; /* Set a fixed height for the container */
+        }
+    </style>
+
+    <!-- searchable menu CSS -->
+    <style>
+        #mySearch {
+            width: 100%;
+            font-size: 18px;
+            padding: 5px;
+            color: white;
+            background-color: #222;
+            font-weight: bold;
+        }
+        #mySearch:focus {
+            border: 1px solid;
+            border-color: #7a97e4;
+        }
+        #myMenu {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            max-height: 150px;
+            overflow-y: scroll;
+            background-color: #222;
+        }
+        #myMenu li {
+            color: white;
+        }
+        #myMenu li a {
+            padding: 12px;
+            text-decoration: none;
+            color: white;
+            display: block;
+            font-weight: bold;
+        }
+        #myMenu li a:hover {
+            background-color: #333;
+        }
+    </style>
+
+    <body>
+        <!-- <sp-textarea id="tool_tip" open placement="top">use this when you want to fill empty areas of the canvas</sp-textarea> -->
+        <!-- <sp-tooltip id="tool_tip" open placement="top">use this when you want to fill empty areas of the canvas</sp-tooltip> -->
+
+        <div class="container wrapper">
+            <div class="sp-tabs">
+                <div
+                    class="sp-tab selected"
+                    id="sp-stable-diffusion-ui-tab"
+                    title="Stable Diffusion UI"
+                >
+                    <sp-label>Stable Diffusion</sp-label>
+                </div>
+                <div class="sp-tab" id="sp-viewer-tab">
+                    <sp-label>Viewer</sp-label>
+                </div>
+                <div class="sp-tab" id="sp-control_net-tab">
+                    <sp-label>ControlNet</sp-label>
+                </div>
+
+                <div
+                    class="sp-tab"
+                    id="sp-image_search-tab"
+                    style="display: none"
+                >
+                    <sp-label>Image Search</sp-label>
+                </div>
+
+                <div
+                    class="sp-tab"
+                    id="sp-prompts-library-tab"
+                    style="display: none"
+                >
+                    <sp-label>Prompts library</sp-label>
+                </div>
+                <div class="sp-tab" id="sp-horde-tab">
+                    <sp-label>Horde</sp-label>
+                </div>
+                <div class="sp-tab" id="sp-extras-tab">
+                    <sp-label>Extras</sp-label>
+                </div>
+
+                <div class="sp-tab" id="sp-settings-tab">
+                    <sp-label>Settings</sp-label>
+                </div>
+                <div>
+                    <span
+                        class="disconnected"
+                        id="automaticStatus"
+                        title="'A' for Automatic1111 server (webui-user.bat), Green is connected. Red Means there is a problem with your Automatic1111. Run 'webui-user.bat' and hit 'Refresh' button "
+                        >A</span
+                    >
+                    <span
+                        class="disconnected"
+                        id="proxyServerStatus"
+                        title="'P' for proxy server (start_server.bat), Green is connected. Red means you need to run 'start_server.bat' or hit Refresh button"
+                        >P</span
+                    >
+                </div>
+                <sp-label slot="label" id="lVersionNumber">v0.0.0</sp-label>
+            </div>
+
+            <div class="sp-tab-page" id="sp-viewer-tab-page">
+                <div class="subTabOptionsContainer">
+                    <div data-container-class="subTabOptionsContainer">
+                        <ul id="viewer-sub-menu" class="custom-menu">
+                            <!-- <li>
+                                <input
+                                    type="radio"
+                                    id="option1"
+                                    name="options"
+                                    checked
+                                    class="sub-menu-tab-class"
+                                />
+                                <label for="option1">Option 1</label>
+                            </li>
+                            <li>
+                                <input
+                                    type="radio"
+                                    id="option2"
+                                    name="options"
+                                    class="sub-menu-tab-class"
+                                />
+                                <label for="option2">Option 2</label>
+                            </li>
+                            <li>
+                                <input
+                                    type="radio"
+                                    id="option3"
+                                    name="options"
+                                />
+                                <label for="option3">Option 3</label>
+                            </li> -->
+                        </ul>
+                        <sp-divider
+                            class="line-divider"
+                            size="small"
+                        ></sp-divider>
+                    </div>
+                    <sp-radio-group
+                        id="rgSubTab"
+                        class="rbMaskContent"
+                        data-container-class="subTabOptionsContainer"
+                        style="display: none"
+                    >
+                        <sp-radio
+                            title=""
+                            class="rbSubTab"
+                            checked
+                            value="viewer"
+                            data-tab-name="sp-viewer-tab"
+                            >Viewer</sp-radio
+                        >
+
+                        <sp-radio
+                            title=""
+                            class="rbSubTab"
+                            id="rbImageSearch"
+                            data-tab-name="sp-image_search-tab"
+                            value="image_search"
+                            >Image Search</sp-radio
+                        >
+                        <sp-radio
+                            title=""
+                            class="rbSubTab"
+                            id="rbPromptsLibrary"
+                            data-tab-name="sp-prompts-library-tab"
+                            value="prompts-library"
+                            >Prompts Library</sp-radio
+                        >
+                    </sp-radio-group>
+                </div>
+                <div id="viewerSubTab">
+                    <div class="flexContainer"></div>
+                    <div></div>
+
+                    <div class="" id="divProgressImageViewerContainer">
+                        <!-- <img
+                            class=""
+                            id="progressImage"
+                            src="https://source.unsplash.com/random"
+                            style="width: 100px; height: 100px; max-width: 100%"
+                        /> -->
+                    </div>
+                    <!-- <hr class="line-divider" /> -->
+                    <sp-divider></sp-divider>
+
+                    <div class="" id="divInitImageViewerContainer">
+                        <!-- <img  class="viewer-image" id="viewer_init_image_test" data-metadata_json_string='{"a":1}' src='https://source.unsplash.com/random' /> -->
+                    </div>
+                    <!-- <hr class="line-divider" /> -->
+                    <sp-divider></sp-divider>
+                    <div class="" id="divInitMaskViewerContainer">
+                        <!-- <img  class="viewer-image" id="viewer_mask_test" data-metadata_json_string='{"a":1}' src='https://source.unsplash.com/random' /> -->
+                    </div>
+                    <!-- <hr class="line-divider" /> -->
+                    <sp-divider></sp-divider>
+                    <div class="viewer-container" id="divViewerImagesContainer">
+                        <!-- <img  class="viewer-image" id="viewer_output_image_test" data-metadata_json_string='{"a":1}' src='https://source.unsplash.com/random' /> -->
+                    </div>
+                </div>
+                <!-- </div> -->
+            </div>
+            <div class="sp-tab-page" id="sp-control_net-tab-page"></div>
+
+            <div class="sp-tab-page" id="sp-image_search-tab-page">
+                <div class="subTabOptionsContainer"></div>
+
+                <div class="flexContainer">
+                    <sp-label slot="label">Image Search Engine</sp-label>
+                </div>
+                <div></div>
+                <div>
+                    <sp-textfield
+                        id="imageSearchField"
+                        type="text"
+                        placeholder="cute cats"
+                        value=""
+                        ><sp-label slot="label">Search:</sp-label></sp-textfield
+                    >
+
+                    <button class="btnSquare" id="btnImageSearch">
+                        Image Search
+                    </button>
+                </div>
+                <div
+                    class="viewer-container"
+                    id="divImageSearchImagesContainer"
+                >
+                    <img
+                        class="history-image"
+                        id="search_image_placeholder"
+                        data-metadata_json_string='{"a":1}'
+                        src="https://source.unsplash.com/random"
+                    />
+                </div>
+            </div>
+            <div class="sp-tab-page" id="sp-prompts-library-tab-page">
+                <div class="subTabOptionsContainer"></div>
+                <sp-label slot="label"
+                    >Prompt Shortcut: a single word that represent a
+                    prompt</sp-label
+                >
+                <div class="">
+                    <sp-label slot="label"
+                        >Key for new prompt shortcut</sp-label
+                    >
+                    <sp-textarea
+                        id="KeyPromptShortcut"
+                        placeholder="to be replaced"
+                        value=""
+                    ></sp-textarea>
+                </div>
+                <div class="">
+                    <sp-label slot="label"
+                        >Value for new prompt shortcut</sp-label
+                    >
+                    <sp-textarea
+                        id="ValuePromptShortcut"
+                        placeholder="to be replaced with"
+                        value=""
+                    ></sp-textarea>
+                    <button class="btnSquare" id="btnUpdatePromptShortcut">
+                        Add to Prompt Shortcut
+                    </button>
+                </div>
+                <div class="">
+                    <sp-textarea
+                        id="taPromptShortcut"
+                        placeholder="prompt shortcut"
+                        value=""
+                    ></sp-textarea>
+                </div>
+                <div>
+                    <sp-picker size="m" label="Selection a prompt">
+                        <sp-menu id="mPromptShortcutMenu" slot="options">
+                            <!-- <sp-menu-item> item </sp-menu-item> -->
+                        </sp-menu>
+                    </sp-picker>
+                    <button class="btnSquare" id="btnRefreshPromptShortcutMenu">
+                        Refresh Menu
+                    </button>
+                </div>
+                <div>
+                    <button class="btnSquare" id="btnLoadPromptShortcut">
+                        Load
+                    </button>
+                    <button class="btnSquare" id="btnSavePromptShortcut">
+                        Save
+                    </button>
+                </div>
+            </div>
+            <div class="sp-tab-page" id="sp-horde-tab-page">
+                <!-- Horde tab page -->
+                <div></div>
+                <div>
+                    <sp-label>Horde Key:</sp-label
+                    ><sp-textfield
+                        id="tiHordeApiKey"
+                        type="password"
+                        placeholder="0000000000"
+                        value=""
+                    ></sp-textfield>
+                    <button class="btnSquare" id="btnSaveHordeSettings">
+                        Save
+                    </button>
+                </div>
+
+                <sp-radio-group>
+                    <sp-label id="BackendTypeLabel" slot="label"
+                        >Select Backend:</sp-label
+                    >
+
+                    <!-- <sp-radio
+                        title="use the horde with the plugin no need to install anything else"
+                        class="rbBackendType"
+                        value="horde_native"
+                        >Native Horde</sp-radio
+                    > -->
+                    <sp-radio
+                        title="Use the horde extension from Automatic1111 Extension tab"
+                        class="rbBackendType"
+                        value="auto1111_horde_extension"
+                        >Auto1111 Horde Extension</sp-radio
+                    >
+                    <sp-radio
+                        title="use Auto1111 disable the Horde"
+                        class="rbBackendType"
+                        value="auto1111"
+                        checked
+                        >Auto1111 Only</sp-radio
+                    >
+                    <!-- <sp-tooltip id="tool_tip" open placement="top">use this when you want to fill empty areas of the canvas</sp-tooltip> -->
+                </sp-radio-group>
+
+                <div id="menu-bar-container_horde" style="display: flex">
+                    <sp-picker size="m" label="Selection type">
+                        <sp-menu id="mModelsMenuHorde" slot="options">
+                            <!-- <sp-menu-item> item </sp-menu-item> -->
+                        </sp-menu>
+                    </sp-picker>
+
+                    <button class="btnSquare" id="btnRefreshModelsHorde">
+                        Refresh Models
+                    </button>
+                    <!-- <sp-label slot="label"
+              id="lVersionNumber">v0.0.0</sp-label> -->
+                </div>
+                <div>
+                    <sp-checkbox id="chUseNSFW">NSFW</sp-checkbox>
+                    <sp-checkbox id="chUseSharedLaion"
+                        >Share with LION</sp-checkbox
+                    >
+                    <sp-slider
+                        style="display: none"
+                        show-value="true"
+                        id="slSeedVariation"
+                        min="1"
+                        max="30"
+                        value="1"
+                    >
+                        <sp-label slot="label">Seed variation:</sp-label>
+                    </sp-slider>
+                </div>
+            </div>
+            <div class="sp-tab-page" id="sp-extras-tab-page">
+                <div class="extraPageContainer"></div>
+                <sp-divider class="line-divider" size="large"></sp-divider>
+                <sp-divider class="line-divider" size="large"></sp-divider>
+            </div>
+
+            <div class="sp-tab-page" id="sp-settings-tab-page">
+                <div>
+                    <sp-label>SD Url:</sp-label
+                    ><sp-textfield
+                        id="tiSdUrl"
+                        type="text"
+                        placeholder="http://127.0.0.1:7860"
+                        value=""
+                        style="width: 160px"
+                    ></sp-textfield
+                    ><button
+                        class="btnSquare"
+                        id="btnSdUrl"
+                        style="margin-left: 5px"
+                    >
+                        Submit
+                    </button>
+                    <button class="btnSquare" id="btnSaveSettingsTabs">
+                        Save
+                    </button>
+                </div>
+                <div id="settingsVAEContainer"></div>
+                <div id="reactSettingsContainer"></div>
+
+                <div>
+                    <sp-checkbox checked id="chUseOriginalPrompt"
+                        >Restore Original Prompt</sp-checkbox
+                    >
+                </div>
+
+                <sp-checkbox checked id="chUseSilentMode" style="display: none"
+                    >Use Silent Mode</sp-checkbox
+                >
+                <sp-radio-group>
+                    <sp-label slot="label"
+                        >Your PC Speed(optimization):</sp-label
+                    >
+                    <!-- <sp-label slot="label">Select a Mode:</sp-label> -->
+                    <sp-radio title="" class="rbPCSpeed" value="slow"
+                        >Slow PC</sp-radio
+                    >
+                    <sp-radio title="" class="rbPCSpeed" value="fast" checked
+                        >Fast PC</sp-radio
+                    >
+
+                    <!-- <sp-tooltip id="tool_tip" open placement="top">use this when you want to fill empty areas of the canvas</sp-tooltip> -->
+                </sp-radio-group>
+                <!-- <a href="https://colab.research.google.com/drive/1nbcx_WOneRmYv9idBO33pN5CbxXrqZHu?usp=sharing" target="_blank">Don't have GPU, use Colab</a> -->
+                <sp-link
+                    href="https://colab.research.google.com/drive/1nbcx_WOneRmYv9idBO33pN5CbxXrqZHu?usp=sharing"
+                    >Use Colab</sp-link
+                >
+
+                <div>
+                    <sp-textfield
+                        title="copy paste the address to access the folder where the images are stored"
+                        id="tiDocPath"
+                        type="text"
+                        placeholder=""
+                        value=""
+                    >
+                        <sp-label slot="label"
+                            >Folder Path (read only):</sp-label
+                        >
+                    </sp-textfield>
+                    <button class="btnSquare" id="btnGetDocPath">
+                        Get Path
+                    </button>
+                </div>
+            </div>
+
+            <div
+                class="sp-tab-page visible"
+                id="sp-stable-diffusion-ui-tab-page"
+            >
+                <div id="sdTabContainer"></div>
+
+                <!-- stable diffusion tab page -->
+
+                <div class="">
+                    <sp-divider class="line-divider" size="large"></sp-divider>
+                    <sp-divider class="line-divider" size="large"></sp-divider>
+                    <div
+                        id="alwaysOnScriptsContainer"
+                        style="margin-bottom: 10px"
+                    ></div>
+                    <sp-divider class="line-divider" size="large"></sp-divider>
+                    <sp-divider class="line-divider" size="large"></sp-divider>
+                    <div style="margin-bottom: 3px"></div>
+                    <div id="scriptsContainer"></div>
+
+                    <sp-divider class="line-divider" size="large"></sp-divider>
+                    <sp-divider class="line-divider" size="large"></sp-divider>
+
+                    <div class="reactViewerContainer"></div>
+                    <sp-divider class="line-divider" size="large"></sp-divider>
+                    <sp-divider class="line-divider" size="large"></sp-divider>
+                    <div class="previewContainer"></div>
+                    <sp-divider class="line-divider" size="large"></sp-divider>
+                    <sp-divider class="line-divider" size="large"></sp-divider>
+                    <div class="samContainer"></div>
+                    <sp-divider class="line-divider" size="large"></sp-divider>
+                    <sp-divider class="line-divider" size="large"></sp-divider>
+                    <div class="oneButtonPromptContainer"></div>
+                    <sp-divider class="line-divider" size="large"></sp-divider>
+                    <sp-divider class="line-divider" size="large"></sp-divider>
+                    <div id="PresetTabContainer"></div>
+                    <sp-divider class="line-divider" size="large"></sp-divider>
+                    <sp-divider class="line-divider" size="large"></sp-divider>
+                    <div id="ComfyUIContainer"></div>
+                    <sp-divider class="line-divider" size="large"></sp-divider>
+                    <sp-divider class="line-divider" size="large"></sp-divider>
+                </div>
+            </div>
+        </div>
+
+        <uxp-panel panelid="second_panel">
+            <div id="search_second_panel" class="container second_panel">
+                <div class="previewContainer"></div>
+                <sp-divider class="line-divider" size="large"></sp-divider>
+                <sp-divider class="line-divider" size="large"></sp-divider>
+                <div class="reactViewerContainer"></div>
+                <sp-divider class="line-divider" size="large"></sp-divider>
+                <sp-divider class="line-divider" size="large"></sp-divider>
+                <div id="sp-control_net-tab-page2"></div>
+                <sp-divider class="line-divider" size="large"></sp-divider>
+                <sp-divider class="line-divider" size="large"></sp-divider>
+                <div id="historyImagesContainer"></div>
+                <sp-divider class="line-divider" size="large"></sp-divider>
+                <sp-divider class="line-divider" size="large"></sp-divider>
+                <div class="lexicaContainer"></div>
+                <sp-divider class="line-divider" size="large"></sp-divider>
+                <sp-divider class="line-divider" size="large"></sp-divider>
+                <!-- <div id="ComfyUIContainer"></div> -->
+            </div>
+        </uxp-panel>
+
+        <uxp-panel panelid="toolbar">
+            <div
+                id="toolbar_panel"
+                class="_container"
+                style="
+                    margin: 0;
+                    display: flex;
+                    justify-content: flex-start;
+                    /* padding-bottom: 5px; */
+                    flex-direction: column;
+                "
+            >
+                <div
+                    style="
+                        margin: 0;
+                        display: flex;
+                        justify-content: flex-start;
+                        /* padding: 1px; */
+                        flex-direction: column;
+                    "
+                >
+                    <div id="toolbarGenerateButtonsContainer"></div>
+                    <div id="viewerButtonContainer"></div>
+                    <div id="toolBarContainer"></div>
+                </div>
+            </div>
+        </uxp-panel>
+        <div>
+            <!-- icon only svg button -->
+            <sp-action-button
+                id="svg_sp_btn"
+                style="
+                    padding: 0;
+                    max-width: 32px;
+                    max-height: 32px;
+                    display: none;
+                "
+            >
+                <div slot="icon" style="fill: currentColor">
+                    <svg viewBox="0 0 36 36" style="width: 18px; height: 18px">
+                        <path
+                            d="M33.567 8.2L27.8 2.432a1.215 1.215 0 0 0-.866-.353H26.9a1.371 1.371 0 0 0-.927.406L5.084 23.372a.99.99 0 0 0-.251.422L2.055 33.1c-.114.377.459.851.783.851a.251.251 0 0 0 .062-.007c.276-.063 7.866-2.344 9.311-2.778a.972.972 0 0 0 .414-.249l20.888-20.889a1.372 1.372 0 0 0 .4-.883 1.221 1.221 0 0 0-.346-.945zM11.4 29.316c-2.161.649-4.862 1.465-6.729 2.022l2.009-6.73z"
+                        />
+                    </svg>
+                </div>
+            </sp-action-button>
+
+            <!-- icon with svg button -->
+            <sp-action-button style="display: none">
+                <div slot="icon" style="fill: currentColor">
+                    <svg viewBox="0 0 36 36" style="width: 18px; height: 18px">
+                        <path
+                            d="M33.567 8.2L27.8 2.432a1.215 1.215 0 0 0-.866-.353H26.9a1.371 1.371 0 0 0-.927.406L5.084 23.372a.99.99 0 0 0-.251.422L2.055 33.1c-.114.377.459.851.783.851a.251.251 0 0 0 .062-.007c.276-.063 7.866-2.344 9.311-2.778a.972.972 0 0 0 .414-.249l20.888-20.889a1.372 1.372 0 0 0 .4-.883 1.221 1.221 0 0 0-.346-.945zM11.4 29.316c-2.161.649-4.862 1.465-6.729 2.022l2.009-6.73z"
+                        />
+                    </svg>
+                </div>
+                Edit Text
+            </sp-action-button>
+            <sp-action-button
+                id="svg_sp_btn_datadownload"
+                style="
+                    padding: 0;
+                    max-width: 32px;
+                    max-height: 32px;
+                    display: none;
+                "
+            >
+                <div slot="icon" style="fill: currentColor">
+                    <svg viewBox="0 0 18 18" style="width: 18px; height: 18px">
+                        <path
+                            d="M5.3885,12.5895a1.211,1.211,0,0,1-.314-.8C3.2305,11.478,1.509,10.942,1,10.135V14.5C1,15.8805,4.582,17,9,17c.1385,0,.2735-.0045.4105-.0065Z"
+                        />
+                        <path
+                            d="M16.5,6.5V9.3635A1.18,1.18,0,0,0,17,8.5V5.135A5.06144,5.06144,0,0,1,14.3855,6.5Z"
+                        />
+                        <path
+                            d="M6.315,10.5H8.5V7.13C5.953,7.059,1.8365,6.4625,1,5.135V8.5c0,.996,1.868,1.8535,4.565,2.255A1.21847,1.21847,0,0,1,6.315,10.5Z"
+                        />
+                        <path
+                            d="M17.573,12.427A.25.25,0,0,0,17.3965,12H15V8H10v4H7.6035a.25.25,0,0,0-.1765.427L12.5,18Z"
+                        />
+                    </svg>
+                </div>
+            </sp-action-button>
+            <!-- <img width="15px" height="15px" src="./icon/ftcopy.svg">   -->
+
+            <sp-action-button
+                id="svg_sp_btn_search"
+                style="
+                    padding: 0;
+                    max-width: 32px;
+                    max-height: 32px;
+                    display: none;
+                "
+            >
+                <div slot="icon" style="fill: currentColor">
+                    <svg viewBox="0 0 36 36" style="width: 18px; height: 18px">
+                        <path
+                            d="M31.5,28.9l-7.4-7.4c1.8-2.3,2.9-5.2,2.9-8.4c0-7.2-5.8-13-13-13S1,6.3,1,13.5s5.8,13,13,13c3.2,0,6.1-1.1,8.4-2.9l7.4,7.4 c0.4,0.4,0.9,0.6,1.5,0.6s1.1-0.2,1.5-0.6C32.3,31.1,32.3,29.7,31.5,28.9z M14,22c-4.7,0-8.5-3.8-8.5-8.5S9.3,5,14,5s8.5,3.8,8.5,8.5 S18.7,22,14,22z"
+                        />
+                    </svg>
+                </div>
+                <!-- Search -->
+            </sp-action-button>
+            <sp-action-button
+                id="svg_sp_btn_canvas"
+                style="
+                    padding: 0;
+                    max-width: 32px;
+                    max-height: 32px;
+                    display: none;
+                "
+            >
+                <div slot="icon" style="fill: currentColor">
+                    <svg
+                        version="1.0"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18.000000pt"
+                        height="18.000000pt"
+                        viewBox="0 0 127.000000 127.000000"
+                        preserveAspectRatio="xMidYMid meet"
+                        style="
+                            width: 32px;
+                            height: 27px;
+                            position: absolute;
+                            top: 3px;
+                            left: -1px;
+                        "
+                    >
+                        <g
+                            transform="translate(0.000000,115.000000) scale(0.100000,-0.100000)"
+                            fill="#000000"
+                            stroke="none"
+                        >
+                            <path
+                                d="M577 1172 c-10 -11 -17 -36 -17 -60 l0 -42 -133 0 c-117 0 -136 -2
+-150 -18 -15 -16 -17 -49 -17 -254 l0 -236 -24 -6 c-53 -13 -74 -67 -38 -99
+15 -13 39 -17 115 -17 53 0 97 -4 97 -9 0 -5 -13 -69 -30 -143 -35 -155 -36
+-169 -12 -191 45 -41 84 -11 104 78 l13 60 150 0 150 0 13 -60 c15 -67 35 -95
+67 -95 27 0 55 29 55 56 0 11 -13 78 -30 150 -16 71 -30 135 -30 142 0 9 26
+12 98 12 83 0 102 3 115 18 33 36 14 85 -39 98 l-24 6 0 238 c0 217 -2 238
+-18 253 -15 14 -42 17 -150 17 l-132 0 0 43 c0 30 -6 49 -18 60 -26 23 -94 22
+-115 -1z m393 -377 l0 -235 -335 0 -335 0 0 235 0 235 335 0 335 0 0 -235z
+m77 -291 c3 -9 0 -20 -8 -25 -18 -11 -790 -11 -808 0 -8 5 -11 16 -8 25 6 14
+49 16 412 16 363 0 406 -2 412 -16z m-293 -133 c9 -39 16 -75 16 -80 0 -7 -47
+-11 -135 -11 -88 0 -135 4 -135 11 0 5 7 41 16 80 l16 69 103 0 103 0 16 -69z"
+                            />
+                        </g>
+                    </svg>
+                </div>
+            </sp-action-button>
+
+            <sp-action-button
+                id="svg_sp_btn_preview"
+                style="
+                    padding: 0;
+                    max-width: 32px;
+                    max-height: 32px;
+                    display: none;
+                "
+            >
+                <div slot="icon" style="fill: currentColor">
+                    <svg
+                        version="1.0"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="512.000000pt"
+                        height="512.000000pt"
+                        viewBox="0 0 512.000000 512.000000"
+                        preserveAspectRatio="xMidYMid meet"
+                        style="
+                            width: 32px;
+                            height: 32px;
+                            position: absolute;
+                            top: 0px;
+                            left: -1px;
+                        "
+                    >
+                        <g
+                            transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+                            fill="#000000"
+                            stroke="none"
+                        >
+                            <path
+                                d="M920 4311 c-118 -36 -212 -129 -259 -254 -18 -50 -21 -79 -21 -217
+l0 -160 80 0 80 0 0 128 c0 147 14 208 60 264 51 62 99 78 231 78 63 0 131 3
+152 6 l37 7 0 78 0 79 -167 -1 c-93 0 -179 -4 -193 -8z"
+                            />
+                            <path
+                                d="M3840 4242 l0 -79 38 -7 c20 -3 88 -6 151 -6 132 0 180 -16 231 -78
+46 -56 60 -117 60 -264 l0 -128 80 0 80 0 0 158 c0 131 -3 169 -19 215 -36
+104 -104 182 -204 234 -50 27 -58 28 -234 31 l-183 4 0 -80z"
+                            />
+                            <path
+                                d="M2450 3404 c-252 -30 -471 -107 -694 -243 -199 -122 -420 -320 -578
+-519 -32 -40 -58 -79 -58 -85 0 -20 105 -146 213 -256 296 -302 597 -483 937
+-562 122 -29 364 -37 495 -16 318 51 613 200 903 457 102 90 249 249 310 334
+l32 44 -47 62 c-67 90 -253 281 -358 368 -248 208 -538 351 -802 397 -90 16
+-290 27 -353 19z m279 -317 c189 -54 340 -214 386 -409 79 -338 -192 -670
+-549 -669 -158 0 -278 47 -390 151 -123 116 -177 238 -178 400 0 161 54 284
+178 400 153 143 345 187 553 127z"
+                            />
+                            <path
+                                d="M2485 2841 c-59 -17 -86 -31 -129 -71 -153 -141 -103 -397 92 -471
+116 -43 262 -7 333 82 46 59 62 106 63 184 0 52 -6 82 -23 117 -27 55 -94 121
+-148 143 -45 19 -146 28 -188 16z"
+                            />
+                            <path
+                                d="M640 1280 c0 -138 3 -167 21 -217 40 -107 103 -178 202 -230 50 -27
+58 -28 235 -31 l182 -4 0 80 0 79 -37 7 c-21 3 -89 6 -152 6 -132 0 -180 16
+-231 78 -46 56 -60 117 -60 264 l0 128 -80 0 -80 0 0 -160z"
+                            />
+                            <path
+                                d="M4320 1312 c0 -147 -14 -208 -60 -264 -51 -62 -99 -78 -231 -78 -63
+0 -131 -3 -151 -6 l-38 -7 0 -79 0 -80 183 4 c176 3 184 4 234 31 99 52 162
+123 202 230 18 50 21 79 21 217 l0 160 -80 0 -80 0 0 -128z"
+                            />
+                        </g>
+                    </svg>
+                </div>
+            </sp-action-button>
+
+            <sp-action-button
+                id="svg_sp_btn_expand"
+                style="
+                    padding: 0;
+                    max-width: 32px;
+                    max-height: 32px;
+                    display: none;
+                "
+            >
+                <div slot="icon" style="fill: currentColor">
+                    <svg
+                        version="1.0"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="200.000000pt"
+                        height="200.000000pt"
+                        viewBox="0 0 200.000000 200.000000"
+                        preserveAspectRatio="xMidYMid meet"
+                        style="
+                            width: 28px;
+                            height: 32px;
+                            position: absolute;
+                            top: -1px;
+                            left: 1px;
+                        "
+                    >
+                        <g
+                            transform="translate(0.000000,200.000000) scale(0.100000,-0.100000)"
+                            fill="#000000"
+                            stroke="none"
+                        >
+                            <path
+                                d="M246 1775 c-11 -6 -23 -21 -27 -35 -9 -31 -9 -275 0 -315 9 -41 50
+-61 89 -43 26 13 27 17 30 97 l3 84 178 -176 c123 -123 184 -177 200 -177 12
+0 33 11 46 25 14 13 25 34 25 46 0 16 -54 77 -177 200 l-176 178 84 3 c80 3
+84 4 97 31 11 22 11 32 0 55 l-13 27 -170 5 c-104 3 -177 1 -189 -5z"
+                            />
+                            <path
+                                d="M1406 1775 c-32 -16 -43 -58 -22 -89 16 -26 18 -26 146 -26 l129 0 3
+-132 3 -133 28 -13 c22 -11 32 -11 55 0 l27 13 3 179 c2 120 -1 183 -9 192
+-14 17 -332 25 -363 9z"
+                            />
+                            <path
+                                d="M1515 1600 c-11 -4 -84 -73 -162 -152 -153 -155 -162 -170 -118 -213
+43 -44 58 -36 219 124 132 131 149 153 149 181 0 22 -7 39 -22 52 -25 20 -36
+21 -66 8z"
+                            />
+                            <path
+                                d="M700 783 c-8 -3 -93 -82 -187 -177 l-173 -171 0 82 c0 78 -2 84 -26
+99 -32 22 -73 10 -92 -26 -18 -35 -13 -330 7 -354 12 -14 36 -16 195 -14 l181
+3 13 28 c11 22 11 32 0 55 -13 26 -17 27 -98 30 l-84 3 174 174 c153 153 173
+177 173 206 0 47 -40 77 -83 62z"
+                            />
+                            <path
+                                d="M1252 780 c-28 -12 -45 -52 -33 -82 5 -13 84 -97 175 -188 l166 -165
+-82 -5 c-78 -5 -84 -6 -96 -33 -11 -22 -11 -32 0 -55 l13 -27 181 -3 c146 -2
+183 0 193 12 8 9 11 67 9 192 l-3 178 -28 16 c-24 13 -30 13 -55 0 -26 -15
+-27 -20 -30 -100 l-3 -84 -172 171 c-95 94 -181 173 -192 176 -11 3 -30 1 -43
+-3z"
+                            />
+                        </g>
+                    </svg>
+                </div>
+            </sp-action-button>
+        </div>
+    </body>
+</html>

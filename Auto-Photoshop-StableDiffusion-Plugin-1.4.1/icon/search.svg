@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <style>
+      .c {
+        stroke: #d6d6d6;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 4px;
+      }
+
+      .c, .d {
+        fill: none;
+      }
+
+      .e {
+        fill: #d6d6d6;
+      }
+    </style>
+  </defs>
+  <g id="a" data-name="frame">
+    <rect class="d" width="64" height="64"/>
+  </g>
+  <g id="b" data-name="search">
+    <path class="e" d="m38.57,14.45c5.98,0,10.85,4.87,10.85,10.85s-4.87,10.85-10.85,10.85-10.85-4.87-10.85-10.85,4.87-10.85,10.85-10.85m0-4c-8.2,0-14.85,6.65-14.85,14.85s6.65,14.85,14.85,14.85,14.85-6.65,14.85-14.85-6.65-14.85-14.85-14.85h0Z"/>
+    <line class="c" x1="26.98" y1="41.06" x2="16.3" y2="51.91"/>
+  </g>
+</svg>

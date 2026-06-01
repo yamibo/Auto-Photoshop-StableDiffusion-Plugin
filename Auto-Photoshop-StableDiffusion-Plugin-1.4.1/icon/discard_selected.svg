@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <style>
+      .c {
+        stroke: #d6d6d6;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 4px;
+      }
+
+      .c, .d {
+        fill: none;
+      }
+    </style>
+  </defs>
+  <g id="a" data-name="frame">
+    <rect class="d" width="64" height="64"/>
+  </g>
+  <g id="b" data-name="Layer_-1">
+    <line class="c" x1="38.11" y1="25.99" x2="26.17" y2="37.92"/>
+    <line class="c" x1="38.11" y1="37.92" x2="26.17" y2="25.99"/>
+    <rect class="c" x="13.34" y="12.24" width="38.49" height="39.43" rx="2.69" ry="2.69"/>
+  </g>
+</svg>
