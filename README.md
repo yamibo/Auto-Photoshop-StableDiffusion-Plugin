@@ -1,8 +1,6 @@
 
 
 # Auto-Photoshop-StableDiffusion-Plugin
-[![Become a Patron!](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://www.patreon.com/AbdullahAlfaraj)
-[![discord badge]][discord link]
 
 [discord badge]: https://flat.badgen.net/discord/members/3mVEtrddXJ
 [discord link]: https://discord.gg/3mVEtrddXJ
@@ -11,7 +9,24 @@
 
 With Auto-Photoshop-StableDiffusion-Plugin, you can directly use the capabilities of Automatic1111 Stable Diffusion in Photoshop without switching between programs. This allows you to easily use Stable Diffusion AI in a familiar environment. You can edit your Stable Diffusion image with all your favorite tools and save it right in Photoshop.
 
-## Maintained Version / 继续维护版本
+## Maintained Version
+
+
+### English Note
+
+This project is a continued maintenance version of Abdullah Alfaraj's open-source Auto-Photoshop-StableDiffusion-Plugin. The original project has not been updated for more than three years, but it remains an important tool in my daily workflow for using Stable Diffusion inside Photoshop. Since I still use it regularly and have run into several workflow inconveniences, I decided to continue development under the original MIT license.
+
+Maintainer: [@yamibo](https://github.com/yamibo) / [x.com/yamibo](https://x.com/yamibo)
+
+The maintained version starts from version `1.5.0`.
+
+Main changes in `1.5.0`:
+
+- The plugin now restores the last used prompts and generation settings when opened.
+- Added a custom preset manager with saving, selection, sorting, renaming, and deletion support.
+- Improved Chinese localization coverage for the plugin UI, while keeping commonly accepted technical terms where appropriate.
+
+## 继续维护版本
 
 ### 中文说明
 
@@ -27,19 +42,6 @@ With Auto-Photoshop-StableDiffusion-Plugin, you can directly use the capabilitie
 - 增加自定义预设管理器，支持保存、选择、排序、重命名和删除预设。
 - 提升中文界面的汉化完整度，尽量翻译插件自身界面中不必要的英文。
 
-### English Note
-
-This project is a continued maintenance version of Abdullah Alfaraj's open-source Auto-Photoshop-StableDiffusion-Plugin. The original project has not been updated for more than three years, but it remains an important tool in my daily workflow for using Stable Diffusion inside Photoshop. Since I still use it regularly and have run into several workflow inconveniences, I decided to continue development under the original MIT license.
-
-Maintainer: [@yamibo](https://github.com/yamibo) / [x.com/yamibo](https://x.com/yamibo)
-
-The maintained version starts from version `1.5.0`.
-
-Main changes in `1.5.0`:
-
-- The plugin now restores the last used prompts and generation settings when opened.
-- Added a custom preset manager with saving, selection, sorting, renaming, and deletion support.
-- Improved Chinese localization coverage for the plugin UI, while keeping commonly accepted technical terms where appropriate.
 
 # Table of Contents
 - [Auto-Photoshop-StableDiffusion-Plugin](#auto-photoshop-stablediffusion-plugin)
